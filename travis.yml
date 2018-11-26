@@ -1,0 +1,22 @@
+sudo: required
+services: 
+  - docker
+
+before_install:
+  - docker build -t therealsheng/react-test -f ./fib-front/Dockerfile.dev ./fib-front
+
+script:
+  - docker run therealsheng/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t therealsheng/multi-fib-front ./fib-front
+  - docker build -t therealsheng/multi-nginx ./nginx
+  - docker build -t therealsheng/multi-server ./server
+  - docker build -t therealsheng/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take this images and Push them into docker hub
+  - docker push therealsheng/multi-fib-front
+  - docker push therealsheng/multi-nginx
+  - docker push therealsheng/multi-server
+  - docker push therealsheng/multi-worker
