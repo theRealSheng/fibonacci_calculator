@@ -22,10 +22,10 @@ services:
   client:
     build:
       dockerfile: Dockerfile.dev
-      context: ./fib-front
+      context: ./client
     volumes:
       - /app/node_modules
-      - ./fib-front:/app
+      - ./client:/app
   worker:
     environment:
       - REDIS_HOST=redis
