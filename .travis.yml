@@ -20,3 +20,16 @@ after_success:
   - docker push therealsheng/multi-nginx
   - docker push therealsheng/multi-server
   - docker push therealsheng/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: eu-west-2
+  app: muilti-docker
+  env: MuiltiDocker-env
+  bucket_name: elasticbeanstalk-eu-west-2-548876645614
+  bucket_path: docker-multi
+  on: 
+    branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: 
+      secure: $AWS_SECRET_KEY
